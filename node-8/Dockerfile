@@ -1,4 +1,4 @@
-FROM openjdk:10
+FROM openjdk:10-slim
 
 ARG NODEJS_VERSION=8
 
