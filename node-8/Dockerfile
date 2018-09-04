@@ -8,8 +8,11 @@ ENV SONAR_SCANNER_FOLDER_NAME "sonar-scanner-$SONAR_SCANNER_VERSION"
 
 WORKDIR /sonar-scanner
 
-RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && \
-    apt-get update && apt-get install -y unzip wget nodejs && \
+RUN apt-get update && apt-get install curl gnupg && \
+    curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get install -y unzip wget nodejs yarn && \
     wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/$SONAR_SCANNER_NAME.zip && \
     unzip $SONAR_SCANNER_NAME.zip
 
