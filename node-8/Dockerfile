@@ -1,19 +1,22 @@
 FROM openjdk:10-slim
 
-ARG NODEJS_VERSION=10
+ARG NODEJS_VERSION=8
+ARG SONAR_SCANNER_VERSION="3.3.0.1492"
+ARG TYPESCRIPT_VERSION="3.2.2"
 
-ENV SONAR_SCANNER_VERSION "3.2.0.1227"
 ENV SONAR_SCANNER_NAME "sonar-scanner-cli-$SONAR_SCANNER_VERSION"
 ENV SONAR_SCANNER_FOLDER_NAME "sonar-scanner-$SONAR_SCANNER_VERSION"
 
 WORKDIR /sonar-scanner
 
-RUN apt-get update && apt-get install curl gnupg && \
+RUN apt-get update && apt-get install -y curl gnupg && \
     curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
     apt-get install -y unzip wget nodejs yarn && \
-    wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/$SONAR_SCANNER_NAME.zip && \
-    unzip $SONAR_SCANNER_NAME.zip
+    wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip && \
+    unzip $SONAR_SCANNER_NAME.zip && \
+    yarn global add typescript@$TYPESCRIPT_VERSION
 
 ENV PATH $PATH:/sonar-scanner/$SONAR_SCANNER_FOLDER_NAME/bin
