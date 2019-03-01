@@ -19,4 +19,5 @@ RUN apt-get update && apt-get install -y curl gnupg && \
     unzip $SONAR_SCANNER_NAME.zip && \
     yarn global add typescript@$TYPESCRIPT_VERSION
 
+ENV NODE_PATH "/usr/local/share/.config/yarn/global/node_modules/"
 ENV PATH $PATH:/sonar-scanner/$SONAR_SCANNER_FOLDER_NAME/bin
